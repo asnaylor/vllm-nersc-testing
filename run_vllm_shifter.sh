@@ -26,7 +26,7 @@ usage() {
 while getopts ":i:dg:n:" opt; do
   case $opt in
     i) SHIFTER_IMAGE=$OPTARG ;;
-    d) DEBUG="NCCL_DEBUG=INFO" ;;
+    d) DEBUG="NCCL_DEBUG=INFO FI_LOG_LEVEL=debug" ;;
     g) GPUS_PER_NODE=$OPTARG ;;
     n) NODES=$OPTARG ;;
     \?) usage ;;

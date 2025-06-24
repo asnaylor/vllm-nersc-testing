@@ -14,7 +14,7 @@ HF_HOME_ARG := HF_HOME=$(HF_HOME)
 
 # Select runner
 ifeq ($(BACKEND),podman)
-    RUNNER=./run_vllm_podman.sh
+	RUNNER=$(error Error: 'podman' backend is currently disabled)
 else
     RUNNER=./run_vllm_shifter.sh
 endif
@@ -43,7 +43,7 @@ help:
 	@echo "Examples:"
 	@echo "  make tp"
 	@echo "  make pp_tp PP_SIZE=2"
-	@echo "  make tp IMAGE=myrepo/myimg:latest"
+	@echo "  make tp IMAGE=myrepo/myimg:latest BACKEND=podman"
 	@echo "  make run MODE=dp MODEL=facebook/opt-350m"
 	@echo "  make tp HF_HOME=/my/hf/cache"
 	@echo ""
@@ -54,10 +54,10 @@ run:
 	$(HF_HOME_ARG) $(RUNNER) $(IMAGE_ARG) -- --mode $(MODE) $(MODEL_ARG) $(PP_ARG)
 
 single:
-	$(HF_HOME_ARG) $(RUNNER) $(IMAGE_ARG) -g 1 -- --mode single $(MODEL_ARG) $(PP_ARG)
+	$(HF_HOME_ARG) $(RUNNER) $(IMAGE_ARG) -g 1 -- --mode single $(MODEL_ARG)
 
 tp:
-	$(HF_HOME_ARG) $(RUNNER) $(IMAGE_ARG) -- --mode tp $(MODEL_ARG) $(PP_ARG)
+	$(HF_HOME_ARG) $(RUNNER) $(IMAGE_ARG) -- --mode tp $(MODEL_ARG)
 
 dp:
 	@echo "Error: 'dp' (data parallel) mode is currently not working."
